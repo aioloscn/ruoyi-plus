@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('书籍管理列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <p>书名：</p>
+                                <input type="text" name="name"/>
+                            </li>
+                            <li>
+                                上架状态：<select name="status" th:with="type=${@dict.getType('sys_book_status')}">
+                                        <option value="">所有</option>
+                                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                      </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.addTab()" shiro:hasPermission="cms:book:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.editTab()" shiro:hasPermission="cms:book:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="cms:book:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="cms:book:export">
+                    <i class="fa fa-download"></i> 导出
+                 </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+
+        var articleModelDatas = [[${@dict.getType('article_model')}]];
+
+        var editFlag = [[${@permission.hasPermi('cms:article:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('cms:article:remove')}]];
+        var prefix = ctx + "cms/book";
+
+
+        var beforePreView=function(v){
+            if(isNotEmpty(v)){
+                var b=Fast.isExist(v);
+                if(b){
+                    return true;
+                }
+            }
+            Fast.msg_error("页面不存在!");
+            return false;
+        }
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{idStr}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "书籍",
+                columns: [{
+                    checkbox: true
+                },
+                {field : 'idStr',title : '主键',visible: false},
+                {field : 'name',title : '书名'},
+                {field : 'picUrl',title : '封面图片', formatter: function (v) {
+                        if (isNotEmpty(v)) {
+                            return "<img style='width: 100px; height: 120px;' src='" + v + "'/>"
+                        } else {
+                            return "-"
+                        }
+                }},
+                {field : 'author',title : '作者',visible:false},
+                {field : 'sellingPrice',title : '售价'},
+                {field : 'discountStr',title : '折扣', width: '60px'},
+                {field : 'originalPrice',title: '原价'},
+                {field : 'author',title : '原文作者'},
+                {field : 'category',title : '分类'},
+                {field : 'publisher',title : '出版社'},
+                {field : 'status',title : '状态', width: '80px', formatter:function(v) {
+                        if (v == 1 | v == '1') {
+                            return "<font color='green'>已上架</font>"
+                        } else if (v == 2 | v == '2') {
+                            return "<font color='gray'>未上架</font>"
+                        } else if (v == 0 | v == '0') {
+                            return "<font color='red'>已删除</font>";
+                        } else {
+                            return v
+                        }
+                }},
+                {title: '操作', align: 'center', width: '120px', formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.editTab(\'' + row.idStr + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.idStr + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

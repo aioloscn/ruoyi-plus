@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.cms.mapper.BookDao">
+
+    <resultMap id="BaseResultMap" type="com.ruoyi.cms.domain.bo.BookBO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
+        <result column="purchase_price" jdbcType="DECIMAL" property="purchasePrice" />
+        <result column="purchase_num" jdbcType="INTEGER" property="purchaseNum" />
+        <result column="selling_price" jdbcType="DECIMAL" property="sellingPrice" />
+        <result column="sales_volume" jdbcType="INTEGER" property="salesVolume" />
+        <result column="discount" jdbcType="INTEGER" property="discount" />
+        <result column="original_price" jdbcType="DECIMAL" property="originalPrice" />
+        <result column="catalog" jdbcType="VARCHAR" property="catalog" />
+        <result column="author" jdbcType="VARCHAR" property="author" />
+        <result column="publisher" jdbcType="VARCHAR" property="publisher" />
+        <result column="other_infor" jdbcType="VARCHAR" property="otherInfor" />
+        <result column="classification" jdbcType="TINYINT" property="classification" />
+        <result column="category" jdbcType="TINYINT" property="category" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+        <result column="sort" jdbcType="INTEGER" property="sort" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="brief" jdbcType="LONGVARCHAR" property="brief" />
+        <result column="preface" jdbcType="LONGVARCHAR" property="preface" />
+        <result column="excerpt" jdbcType="LONGVARCHAR" property="excerpt" />
+    </resultMap>
+
+  <insert id="insertBook" parameterType="map">
+    insert ignore into library.book (id, name, pic_url, purchase_price, selling_price, discount, original_price, brief, preface, excerpt,
+        catalog, author, publisher, other_infor, classification, category, status, sort, gmt_create, gmt_modified)
+    value (#{id}, #{name}, #{pic_url}, #{purchase_price}, #{selling_price}, #{discount}, #{original_price}, #{brief}, #{preface}, #{excerpt},
+        #{catalog}, #{author}, #{publisher}, #{other_infor}, #{classification}, #{category}, #{status}, #{sort},
+        #{gmt_create, jdbcType=TIMESTAMP}, #{gmt_modified, jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insert" parameterType="com.ruoyi.cms.domain.vo.BookVO">
+        insert into library.book
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                id, name, pic_url, purchase_price, selling_price,
+            <if test="purchaseNum != null">
+                purchase_num,
+            </if>
+            <if test="salesVolume != null">
+                sales_volume,
+            </if>
+            <if test="discount != null">
+                discount,
+            </if>
+                original_price,
+                brief,
+                preface,
+                excerpt,
+            <if test="catalog != null and catalog != ''">
+                `catalog`,
+            </if>
+            <if test="author != null and author != ''">
+                author,
+            </if>
+            <if test="publisher != null and publisher != ''">
+                publisher,
+            </if>
+            <if test="otherInfor != null and otherInfor != ''">
+                other_infor,
+            </if>
+            <if test="classification != null">
+                classification,
+            </if>
+            <if test="category != null">
+                category,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+        </trim>
+        <trim prefix="value (" suffix=")" suffixOverrides=",">
+                #{id},
+                #{name},
+                #{picUrl},
+                #{purchasePrice},
+                #{sellingPrice},
+            <if test="purchaseNum != null">
+                #{purchaseNum},
+            </if>
+            <if test="salesVolume != null">
+                #{salesVolume},
+            </if>
+            <if test="discount != null">
+                #{discount},
+            </if>
+                #{originalPrice},
+                #{brief},
+                #{preface},
+                #{excerpt},
+            <if test="catalog != null and catalog != ''">
+                #{catalog},
+            </if>
+            <if test="author != null and author != ''">
+                #{author},
+            </if>
+            <if test="publisher != null and publisher != ''">
+                #{publisher},
+            </if>
+            <if test="otherInfor != null and otherInfor != ''">
+                #{otherInfor},
+            </if>
+            <if test="classification != null">
+                #{classification},
+            </if>
+            <if test="category != null">
+                #{category},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="sort != null">
+                #{sort},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate, jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified, jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateById">
+        update library.book
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="picUrl != null and picUrl != ''">
+                pic_url = #{picUrl},
+            </if>
+            <if test="purchasePrice != null">
+                purchase_price = #{purchasePrice},
+            </if>
+            <if test="sellingPrice != null">
+                selling_price = #{sellingPrice},
+            </if>
+            <if test="purchaseNum != null">
+                purchase_num = #{purchaseNum},
+            </if>
+            <if test="salesVolume != null">
+                sales_volume = #{salesVolume},
+            </if>
+            <if test="discount != null">
+                discount = #{discount},
+            </if>
+            <if test="originalPrice != null">
+                original_price = #{originalPrice},
+            </if>
+            <if test="brief != null">
+                brief = #{brief},
+            </if>
+            <if test="preface != null">
+                preface = #{preface},
+            </if>
+            <if test="excerpt != null"></if>
+                excerpt = #{excerpt},
+            <if test="catalog != null">
+                catalog = #{catalog},
+            </if>
+            <if test="author != null">
+                author = #{author},
+            </if>
+            <if test="publisher != null">
+                publisher = #{publisher},
+            </if>
+            <if test="otherInfor != null">
+                other_infor = #{otherInfor},
+            </if>
+            <if test="classification != null">
+                classification = #{classification},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified, jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="selectClassificationByCategory" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select sort from cms_category where category_id = (
+            select parent_id from cms_category where category_id = #{category}
+        )
+    </select>
+
+    <select id="selectCategoryById" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select sort from cms_category where category_id = #{categoryId}
+    </select>
+
+    <select id="selectBookById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select * from library.book where id = #{id}
+    </select>
+    <select id="selectBookByIds" resultType="java.lang.Long" parameterType="list">
+        select id from library.book where id in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="deleteBookByIds">
+        update library.book
+        set status = #{status}
+        where id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

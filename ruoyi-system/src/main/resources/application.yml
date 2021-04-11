@@ -1,0 +1,11 @@
+spring:
+  redis:
+    database: 3
+    host: 127.0.0.1
+    port: 6379
+    password:
+    timeout: 0
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/system/*.xml
+  type-aliases-package: com.ruoyi.system.mapper
