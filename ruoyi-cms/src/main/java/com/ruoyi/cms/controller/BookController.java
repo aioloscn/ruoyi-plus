@@ -75,7 +75,7 @@ public class BookController extends BaseController
             PageDomain pageDomain = TableSupport.buildPageRequest();
             Integer pageNum = pageDomain.getPageNum();
             Integer pageSize = pageDomain.getPageSize();
-            String bookServerUrlExecute = "http://127.0.0.1:7070/book/book/getAllBooks?page=" + pageNum + "&pageSize=" + pageSize;
+            String bookServerUrlExecute = "http://127.0.0.1:7070/library-book/book/getAllBooks?page=" + pageNum + "&pageSize=" + pageSize;
 
             if (StringUtils.isNotBlank(book.getName())) {
                 bookServerUrlExecute += "&keyword=" + book.getName();
