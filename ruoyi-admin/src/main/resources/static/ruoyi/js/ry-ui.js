@@ -1073,7 +1073,12 @@ var table = {
             	table.set();
             	var url = "/404.html";
             	if ($.common.isNotEmpty(id)) {
-            	    url = table.options.updateUrl.replace("{id}", id);
+					var reg = /{idStr}/;
+					if (reg.test(table.options.updateUrl)) {
+						url = table.options.updateUrl.replace("{idStr}", id);
+					} else {
+						url = table.options.updateUrl.replace("{id}", id);
+					}
             	} else {
             	    var row = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
             	    url = table.options.updateUrl.replace("{id}", row);
@@ -1097,7 +1102,12 @@ var table = {
             			$.modal.alertWarning("请至少选择一条记录");
             			return;
             		}
-            	    url = table.options.updateUrl.replace("{id}", id);
+					var reg = /{idStr}/;
+					if (reg.test(table.options.updateUrl)) {
+						url = table.options.updateUrl.replace("{idStr}", id);
+					} else {
+						url = table.options.updateUrl.replace("{id}", id);
+					}
             	}
                 return url;
             },
